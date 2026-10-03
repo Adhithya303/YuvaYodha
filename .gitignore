@@ -1,0 +1,210 @@
+# =========================================================
+# IdleWise — Git Ignore
+# Python + FastAPI + SQLite + React/Vite
+# =========================================================
+
+
+# ---------------------------------------------------------
+# ENVIRONMENT / SECRETS
+# ---------------------------------------------------------
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep the template
+!.env.example
+
+
+# ---------------------------------------------------------
+# PYTHON
+# ---------------------------------------------------------
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.so
+
+.Python
+.python-version
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+
+# ---------------------------------------------------------
+# PYTEST / COVERAGE
+# ---------------------------------------------------------
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+*.py,cover
+
+.cache/
+
+
+# ---------------------------------------------------------
+# SQLITE DATABASE
+# ---------------------------------------------------------
+
+*.db
+*.sqlite
+*.sqlite3
+
+backend/data/*.db
+backend/data/*.sqlite
+backend/data/*.sqlite3
+
+# Keep the data directory in Git
+!backend/data/.gitkeep
+
+
+# ---------------------------------------------------------
+# FRONTEND / NODE
+# ---------------------------------------------------------
+
+node_modules/
+
+frontend/node_modules/
+
+# Vite build output
+frontend/dist/
+dist/
+
+# Vite cache
+.vite/
+frontend/.vite/
+
+# npm / yarn / pnpm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# npm cache
+.npm/
+
+# Optional frontend coverage
+frontend/coverage/
+coverage/
+
+
+# ---------------------------------------------------------
+# TYPESCRIPT CACHE
+# ---------------------------------------------------------
+
+*.tsbuildinfo
+
+
+# ---------------------------------------------------------
+# LOG FILES
+# ---------------------------------------------------------
+
+*.log
+logs/
+backend/logs/
+frontend/logs/
+
+
+# ---------------------------------------------------------
+# TEMPORARY / RUNTIME FILES
+# ---------------------------------------------------------
+
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+
+# ---------------------------------------------------------
+# IDE / EDITOR
+# ---------------------------------------------------------
+
+.vscode/
+.idea/
+
+*.code-workspace
+
+# Visual Studio
+.vs/
+
+
+# ---------------------------------------------------------
+# ANTIGRAVITY / GEMINI LOCAL ARTIFACTS
+# ---------------------------------------------------------
+
+.gemini/
+.antigravity/
+.antigravity-ide/
+
+# Local development artifacts
+brain/
+.system_generated/
+
+
+# ---------------------------------------------------------
+# OPERATING SYSTEM FILES
+# ---------------------------------------------------------
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+
+# ---------------------------------------------------------
+# LOCAL SCREENSHOTS / RECORDINGS IF STORED TEMPORARILY
+# ---------------------------------------------------------
+
+recordings/
+screenshots/temp/
+artifacts/temp/
+
+
+# ---------------------------------------------------------
+# LOCAL BACKUPS
+# ---------------------------------------------------------
+
+*.backup
+*.old
+backup/
+backups/
