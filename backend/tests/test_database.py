@@ -123,3 +123,62 @@ def test_job_creation_and_validation(session: Session):
             deadline=50,
             quantity=1,
         )
+
+
+def test_database_url_normalization():
+    """Verify postgresql:// URLs are normalized to postgresql+psycopg:// and other URLs remain untouched."""
+    from app.database import normalize_database_url
+
+    # Test B: postgresql:// normalized to postgresql+psycopg://
+    pg_url = "postgresql://user:secret@ep-cool-db.neon.tech/neondb?sslmode=require"
+    assert normalize_database_url(pg_url) == "postgresql+psycopg://user:secret@ep-cool-db.neon.tech/neondb?sslmode=require"
+
+    # Test C: postgresql+psycopg:// not modified
+    psycopg_url = "postgresql+psycopg://user:secret@ep-cool-db.neon.tech/neondb"
+    assert normalize_database_url(psycopg_url) == psycopg_url
+
+    # SQLite URL not modified
+    sqlite_url = "sqlite:///./data/idlewise.db"
+    assert normalize_database_url(sqlite_url) == sqlite_url
+
+
+def test_sqlite_engine_configuration():
+    """Test A: SQLite URL creates an engine with check_same_thread=False connect_args."""
+    from unittest.mock import patch
+    from app.database import create_database_engine
+
+    with patch("app.database.create_engine") as mock_create:
+        create_database_engine("sqlite:///./data/test.db")
+        mock_create.assert_called_once()
+        args, kwargs = mock_create.call_args
+        assert args[0] == "sqlite:///./data/test.db"
+        assert kwargs.get("connect_args") == {"check_same_thread": False}
+
+
+def test_postgresql_engine_configuration():
+    """Test D: PostgreSQL engine receives pool_pre_ping=True and does NOT receive check_same_thread."""
+    from unittest.mock import patch
+    from app.database import create_database_engine
+
+    with patch("app.database.create_engine") as mock_create:
+        create_database_engine("postgresql://user:pass@ep-demo.neon.tech/neondb?sslmode=require")
+        mock_create.assert_called_once()
+        args, kwargs = mock_create.call_args
+        # Normalized URL with driver
+        assert args[0] == "postgresql+psycopg://user:pass@ep-demo.neon.tech/neondb?sslmode=require"
+        # pool_pre_ping is True
+        assert kwargs.get("pool_pre_ping") is True
+        # connect_args should not contain check_same_thread
+        connect_args = kwargs.get("connect_args", {})
+        assert "check_same_thread" not in connect_args
+
+
+def test_database_info_security():
+    """Verify get_database_info does not leak sensitive credentials."""
+    from app.database import get_database_info
+
+    info = get_database_info()
+    assert "dialect" in info
+    assert "is_sqlite" in info
+    assert "password" not in str(info).lower()
+
